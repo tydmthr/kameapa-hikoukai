@@ -216,14 +216,92 @@ function ScreenHero({ go, i }) {
 }
 
 // 2) LEAK GALLERY — tap-to-unblur grid
+// CSS-drawn "fail photo" scenes so the reveal has real-feeling content.
+function FakePhotoBlur({ sky, ground, children, rotate = 0 }) {
+  return (
+    <div style={{
+      position: 'absolute', inset: 0,
+      background: `linear-gradient(to bottom, ${sky} 0%, ${sky} 55%, ${ground} 55%, ${ground} 100%)`,
+      transform: `rotate(${rotate}deg) scale(1.15)`,
+      transformOrigin: 'center',
+    }}>{children}</div>
+  );
+}
+function FakeCat() {
+  return (
+    <FakePhotoBlur sky="#4a3a2a" ground="#2a1f15" rotate={-22}>
+      {/* blurry cat silhouette */}
+      <div style={{ position: 'absolute', left: '22%', top: '38%', width: '55%', height: '42%', background: 'radial-gradient(ellipse, #6a5340 30%, #3a2a1f 65%, transparent 75%)', filter: 'blur(1px)' }}/>
+      <div style={{ position: 'absolute', left: '36%', top: '30%', width: '10%', height: '14%', background: '#3a2a1f', borderRadius: '50% 50% 0 0', transform: 'rotate(-18deg)' }}/>
+      <div style={{ position: 'absolute', left: '50%', top: '28%', width: '10%', height: '14%', background: '#3a2a1f', borderRadius: '50% 50% 0 0', transform: 'rotate(12deg)' }}/>
+      <div style={{ position: 'absolute', left: '44%', top: '52%', width: '6%', height: '6%', background: '#ffcc66', borderRadius: '50%', filter: 'blur(.5px)' }}/>
+      <div style={{ position: 'absolute', left: '52%', top: '52%', width: '6%', height: '6%', background: '#ffcc66', borderRadius: '50%', filter: 'blur(.5px)' }}/>
+    </FakePhotoBlur>
+  );
+}
+function FakeCones() {
+  return (
+    <FakePhotoBlur sky="#6a7a8a" ground="#3a3530">
+      {[15, 30, 48, 65, 80].map((x, i) => (
+        <div key={i} style={{
+          position: 'absolute', left: `${x}%`, bottom: `${20 + (i % 2) * 8}%`,
+          width: 0, height: 0,
+          borderLeft: '7px solid transparent', borderRight: '7px solid transparent',
+          borderBottom: `${18 + (i % 3) * 4}px solid #ff6b2d`,
+          filter: 'drop-shadow(0 2px 1px rgba(0,0,0,.4))',
+        }}/>
+      ))}
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(transparent 50%, rgba(0,0,0,.25))' }}/>
+    </FakePhotoBlur>
+  );
+}
+function FakeFinger() {
+  return (
+    <FakePhotoBlur sky="#8a7a5a" ground="#5a4a3a" rotate={8}>
+      {/* finger over lens */}
+      <div style={{ position: 'absolute', left: '-5%', top: '10%', width: '65%', height: '90%', background: 'radial-gradient(ellipse at 30% 40%, #d9a888 0%, #a8805e 40%, #705035 75%)', borderRadius: '60% 40% 50% 50%', filter: 'blur(2px)' }}/>
+      <div style={{ position: 'absolute', right: '5%', top: '20%', width: '40%', height: '30%', background: '#c8e8f0', borderRadius: '30%', filter: 'blur(2px)', opacity: .5 }}/>
+    </FakePhotoBlur>
+  );
+}
+function FakeCeiling() {
+  return (
+    <FakePhotoBlur sky="#d8d0c0" ground="#a89888">
+      <div style={{ position: 'absolute', top: '15%', left: '20%', width: '60%', height: '30%', background: '#b8a890', borderRadius: 4, boxShadow: 'inset 0 0 0 2px rgba(0,0,0,.15)' }}/>
+      <div style={{ position: 'absolute', top: '20%', left: '40%', width: '20%', height: '20%', background: '#fff8c8', borderRadius: '50%', filter: 'blur(3px)', opacity: .7 }}/>
+      <div style={{ position: 'absolute', bottom: '10%', right: '10%', fontSize: 8, color: '#fff', fontFamily: 'monospace', background: 'rgba(0,0,0,.6)', padding: '1px 3px' }}>2015.08.12</div>
+    </FakePhotoBlur>
+  );
+}
+function FakeMemo() {
+  return (
+    <FakePhotoBlur sky="#1a1a22" ground="#1a1a22">
+      <div style={{ position: 'absolute', inset: '10% 12%', background: '#f5f2e8', padding: '10px 8px', fontFamily: '"Shippori Mincho", serif', fontSize: 8, color: '#2a2520', lineHeight: 1.4, borderRadius: 2, transform: 'rotate(-2deg)', boxShadow: '0 4px 10px rgba(0,0,0,.5)' }}>
+          <div style={{ fontWeight: 700, marginBottom: 4, borderBottom: '1px solid #2a2520', paddingBottom: 2 }}>2019.11.03</div>
+          <div>俺はなぜ<br/>こんなことを<br/>書いているのか</div>
+          <div style={{ marginTop: 4, color: '#a03030', fontWeight: 700 }}>——覚醒</div>
+      </div>
+    </FakePhotoBlur>
+  );
+}
+function FakeDinner() {
+  return (
+    <FakePhotoBlur sky="#3a2a1a" ground="#2a1a0a" rotate={35}>
+      <div style={{ position: 'absolute', left: '18%', top: '28%', width: '64%', height: '55%', background: 'radial-gradient(ellipse, #d8d0c0 30%, #8a7a5a 70%)', borderRadius: '50%', filter: 'blur(1px)' }}/>
+      <div style={{ position: 'absolute', left: '30%', top: '40%', width: '40%', height: '30%', background: 'radial-gradient(ellipse, #b85030 20%, #6a2818 70%)', borderRadius: '45%' }}/>
+      <div style={{ position: 'absolute', left: '38%', top: '45%', width: '8%', height: '8%', background: '#fff8d0', borderRadius: '50%', opacity: .7 }}/>
+    </FakePhotoBlur>
+  );
+}
+
 function ScreenLeak() {
   const tiles = [
-    { bg: 'linear-gradient(135deg, #3a2a1a, #1a1a2a)', label: 'IMG_2015.png', tag: 'cringe' },
-    { bg: 'linear-gradient(135deg, #2a1a3a, #1a2a1a)', label: 'cone_04.jpg', tag: 'weird' },
-    { bg: 'linear-gradient(135deg, #1a3a2a, #3a1a1a)', label: 'blurry_cat.jpg', tag: 'failed' },
-    { bg: 'linear-gradient(135deg, #3a1a2a, #2a2a1a)', label: 'memo_2019.md', tag: 'cringe' },
-    { bg: 'linear-gradient(135deg, #2a3a1a, #1a1a3a)', label: 'wtf_001.jpg', tag: 'wtf' },
-    { bg: 'linear-gradient(135deg, #1a2a3a, #3a2a1a)', label: '???.heic', tag: '?' },
+    { Scene: FakeCeiling, label: 'IMG_2015.png', tag: 'cringe', caption: 'カラオケの天井（2015）' },
+    { Scene: FakeCones, label: 'cone_04.jpg', tag: 'weird', caption: 'なぜか撮ったコーン' },
+    { Scene: FakeCat, label: 'blurry_cat.jpg', tag: 'failed', caption: '逃げる猫・ブレブレ' },
+    { Scene: FakeMemo, label: 'memo_2019.md', tag: 'cringe', caption: '2019年の痛いメモ' },
+    { Scene: FakeFinger, label: 'IMG_4821.HEIC', tag: 'failed', caption: '指が全部隠してる' },
+    { Scene: FakeDinner, label: '???.heic', tag: 'wtf', caption: '何の料理か不明' },
   ];
   return (
     <div style={{ height: '100%', padding: '70px 20px 120px', overflow: 'auto', background: cX.bg }} className="no-sb">
@@ -238,7 +316,7 @@ function ScreenLeak() {
   );
 }
 
-function LeakTile({ bg, label, tag }) {
+function LeakTile({ Scene, label, tag, caption }) {
   const [rev, setRev] = React.useState(false);
   return (
     <div data-no-swipe
@@ -247,19 +325,28 @@ function LeakTile({ bg, label, tag }) {
       onPointerLeave={() => setRev(false)}
       style={{
         position: 'relative', aspectRatio: '1', borderRadius: 6, overflow: 'hidden',
-        border: `1px solid ${cX.border}`, background: cX.surface, cursor: 'pointer',
+        border: `1px solid ${cX.border}`, background: '#000', cursor: 'pointer',
         userSelect: 'none',
       }}>
       <div style={{
-        position: 'absolute', inset: 0, background: bg,
-        filter: rev ? 'blur(0)' : 'blur(14px)',
-        transform: rev ? 'scale(1.02)' : 'scale(1.12)',
-        transition: 'filter .35s, transform .35s',
-      }}/>
+        position: 'absolute', inset: 0,
+        filter: rev ? 'blur(0)' : 'blur(16px)',
+        transition: 'filter .35s',
+      }}>
+        <Scene/>
+      </div>
+      {rev && (
+        <div style={{
+          position: 'absolute', bottom: 0, left: 0, right: 0,
+          fontSize: 10, fontFamily: '"Shippori Mincho", serif', color: '#fff',
+          background: 'linear-gradient(transparent, rgba(0,0,0,.85))',
+          padding: '14px 8px 6px', lineHeight: 1.3,
+        }}>{caption}</div>
+      )}
       <div style={{
-        position: 'absolute', bottom: 6, left: 6, fontSize: 10,
+        position: 'absolute', top: 6, left: 6, fontSize: 9,
         fontFamily: 'JetBrains Mono, monospace', color: '#fff',
-        background: 'rgba(0,0,0,.6)', padding: '2px 6px', borderRadius: 2,
+        background: 'rgba(0,0,0,.6)', padding: '2px 5px', borderRadius: 2,
       }}>#{tag}</div>
       {!rev && (
         <div style={{
@@ -279,7 +366,7 @@ function ScreenNight() {
     { t: '19:00', l: 'ぽつぽつと人が集まり始める。みんな、なんとなくスマホを握りしめている。' },
     { t: '19:03', l: <>「これ、<Censored>ほんとに</Censored>見せるんすか？」という顔の人あり。</> },
     { t: '19:42', l: <>プロジェクターに、誰かの<Censored>2015年のSNS投稿スクショ</Censored>が映る。会場、爆笑。本人は頭を抱えてる。</>, hi: true },
-    { t: '20:18', l: <>次は「<Censored>駐車場のコーン10種類コレクション</Censored>」。「わかる」「いや、わからんわ」。</> },
+    { t: '20:18', l: <>次は<Censored>「駐車場のコーン10種類コレクション」</Censored>。「わかる」「いや、わからんわ」。</> },
     { t: '21:30', l: 'みんな自分の黒歴史を笑いながら語ってる。距離が、ちょっと近くなってる。' },
     { t: '22:00', l: <>帰り道、<mark style={{ background: cX.yellow, color: '#111', padding: '0 4px', fontWeight: 700 }}>「あれ、人生そんなに悪くないかもな」</mark>って思える。</>, hi: true },
   ];
@@ -430,14 +517,14 @@ function ScreenApply() {
         {[
           ['DATE', '2026.04.XX (TUE)'],
           ['TIME', '19:00 — 22:00'],
-          ['VENUE', 'カメアパ 中庭 / 共用スペース'],
-          ['CAPACITY', '10 – 15 人'],
+          ['VENUE', 'カメアパ 一階 SUKU'],
+          ['CAPACITY', '10 名まで'],
           ['FEE', '¥1,500（軽食・ドリンク込）'],
           ['TARGET', <span key="t">非公開フォルダに何か入ってる人<br/><span style={{ color: cX.dim, fontSize: 10 }}>= 全人類</span></span>],
           ['HOST', '豊田元洋 / カメアパ企画チーム'],
           ['APPLY', <Censored key="a">https://forms.google/xxxx</Censored>],
-          ['CONTACT', <Censored key="c">mail@kameapa.jp</Censored>],
-          ['DEADLINE', '開催 XX 日前'],
+          ['CONTACT', <Censored key="c">motohiro.toyoda@gmail.com</Censored>],
+          ['DEADLINE', '開催 3 日前'],
         ].map(([k, v]) => (
           <div key={k} style={{ display: 'grid', gridTemplateColumns: '80px 1fr', gap: 10, borderBottom: `1px dashed ${cX.border}`, padding: '3px 0' }}>
             <span style={{ color: cX.dim, letterSpacing: 2 }}>{k}</span>
